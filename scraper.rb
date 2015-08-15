@@ -30,12 +30,20 @@ def scrape_list(url)
       name: cap[2],
       party: cap[3].upcase,
       area: cap[4],
-      # term: term,
-      # source: url,
+      term: 6,
+      source: url,
     }
     data[:area] = 'Obock' if data[:area] == 'Ubock'
     ScraperWiki.save_sqlite([:name, :area], data)
   end
 end
+
+term = { 
+  id: 6,
+  name: "6th National Assembly",
+  start_date: 2013,
+  source: 'https://en.wikipedia.org/wiki/National_Assembly_(Djibouti)'
+}
+ScraperWiki.save_sqlite([:id], term, 'terms')
 
 scrape_list('http://www.lughaya.com/archives/19857')
