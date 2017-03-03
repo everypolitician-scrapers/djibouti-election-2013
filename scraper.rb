@@ -2,19 +2,12 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
-require 'scraperwiki'
-require 'nokogiri'
-require 'open-uri'
-
 require 'pry'
+require 'scraped'
+require 'scraperwiki'
+
 require 'open-uri/cached'
 OpenURI::Cache.cache_path = '.cache'
-
-class String
-  def tidy
-    gsub(/[[:space:]]+/, ' ').strip
-  end
-end
 
 def noko_for(url)
   Nokogiri::HTML(open(url).read)
@@ -34,6 +27,7 @@ def scrape_list(url)
       source: url,
     }
     data[:area] = 'Obock' if data[:area] == 'Ubock'
+    # puts data.reject { |k, v| v.to_s.empty? }.sort_by { |k, v| k }.to_h
     ScraperWiki.save_sqlite(%i(name area), data)
   end
 end
